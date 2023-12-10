@@ -1,0 +1,10 @@
+# npm dependencies
+client/node_modules/
+
+# git
+.git
+.gitignore
+
+
+client/build/
+npm-debug.log
