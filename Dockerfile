@@ -2,7 +2,6 @@
 FROM node:18 as build
 
 
-
 # Make workdir
 RUN mkdir /app
 
@@ -23,6 +22,9 @@ COPY . .
 # Build the React app for production
 RUN cd client && npm run build
 
+
+RUN echo "ilijaaaaaaaaaa"
+RUN pwd
 # Use Nginx as the production server
 FROM nginx:alpine
 
@@ -31,7 +33,6 @@ COPY --from=build /app/client/build /usr/share/nginx/html
 
 # Expose port 80 for the Nginx server
 EXPOSE 80
-
 # Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
 
