@@ -6,8 +6,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - musicnft:./client/build/  # build files will be added at this directory !!!
-  
+      - musicnft:./client/build/ # build files will be added at this directory !!!
+
   nginx:
     container_name: 'nginx'
     image: '${NGINX_IMAGE}'
@@ -16,5 +16,5 @@ services:
     volumes:
       - musicnft:/usr/share/nginx/html/musicnft # Copy React App's build files to the Nginx directory
 
-volumes:
-  musicnft:
+  volumes:
+    musicnft:
