@@ -4,19 +4,19 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    cache_from:
+      cache_from:
         - '${WEBSITE_IMAGE}'
     image: '${WEBSITE_IMAGE}'
     ports:
       - "3000:3000"
     volumes:
-      - musicnft:./client/build/  # build files will be added at this directory !!!
+      - musicnft:./client/build/ # build files will be added at this directory !!!
 
   nginx:
     build:
-     context: ./nginx
-     dockerfile: Dockerfile
-    cache_from:
+      context: ./nginx
+      dockerfile: Dockerfile
+      cache_from:
         - '${NGINX_IMAGE}'
     image: '${NGINX_IMAGE}'
     ports:
