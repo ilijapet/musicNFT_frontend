@@ -24,5 +24,5 @@ services:
     volumes:
       - musicnft:/usr/share/nginx/html/musicnft # Copy React App's build files to the Nginx directory
 
-    volumes:
-      musicnft:
+volumes:
+  musicnft:
