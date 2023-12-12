@@ -1,11 +1,22 @@
 version: '3'
-
 services:
-  musicnft_frontend:
-    build: '.'
-    env_file:
-      - 'client/.env'
-    tty: true
-    stdin_open: true
+  musicnft:
+    container_name: musicnft
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - musicnft:/client/build/ # build files will be added at this directory !!!
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
-      - '8080:8080'
+      - '80:80'
+    volumes:
+      - musicnft:/usr/share/nginx/html/musicnft # Copy React App's build files to the Nginx directory
+
+volumes:
+  musicnft:
