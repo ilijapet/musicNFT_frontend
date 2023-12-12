@@ -56,7 +56,7 @@ export default function SignInSide() {
         });
 
     
-        await fetch("http://127.0.0.1:8000/api/token/", {
+        await fetch("http://nftsmusic.net/api/token/", {
             method: "POST",
             // Adding body or contents to send
             body: JSON.stringify({
