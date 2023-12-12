@@ -4,7 +4,7 @@ import SignUp from './components/SignUp';
 import SignInSide from './components/SignInSide';
 
 function App() {
-  console.log("u app sam")
+  console.log("unutra si")
   return (
       <SignInSide />
     );
