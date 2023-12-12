@@ -10,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - musicnft:./client/build/ # build files will be added at this directory !!!
+      - musicnft:/client/build/ # build files will be added at this directory !!!
 
   nginx:
     build:
