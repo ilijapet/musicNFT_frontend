@@ -4,8 +4,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-      cache_from:
-        - '${WEBSITE_IMAGE}'
+      # cache_from:
+      #   - '${WEBSITE_IMAGE}'
     image: '${WEBSITE_IMAGE}'
     ports:
       - "3000:3000"
