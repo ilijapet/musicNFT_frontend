@@ -4,12 +4,15 @@ on:
   push:
     branches: [main]
 
+# define some environment variables
 env:
   WEBSITE_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/client
   NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
   REGISTRY: ghcr.io
 
+# define the three jobs to run
 jobs:
+  #  1) the build job
   build:
     name: Build the Docker Image
     runs-on: ubuntu-latest
@@ -22,6 +25,7 @@ jobs:
         run: |
           echo "WEBSITE_IMAGE=$(echo ${{env.WEBSITE_IMAGE}} )" >> $GITHUB_ENV
           echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}} )" >> $GITHUB_ENV
+
       - name: Log in to GitHub Packages
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -31,13 +35,17 @@ jobs:
         run: |
           docker pull ${{ env.WEBSITE_IMAGE }} || true
           docker pull ${{ env.NGINX_IMAGE }} || true
+
       - name: Build images
         run: |
           docker-compose -f docker-compose.ci.yml build
+
       - name: Push images
         run: |
           docker push ${{ env.WEBSITE_IMAGE }}
           docker push ${{ env.NGINX_IMAGE }}
+
+  # 2) the checking-secrets job
   checking-secrets:
     name: Checking secrets
     runs-on: ubuntu-latest
@@ -54,6 +62,8 @@ jobs:
           else
             echo "defined=false" >> $GITHUB_OUTPUT;
           fi
+
+  # 3) the deploy job
   deploy:
     name: Deploy to AWS EC2
     runs-on: ubuntu-latest
@@ -69,6 +79,7 @@ jobs:
           echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
           echo NAMESPACE=${{ secrets.NAMESPACE }} >> .env
           echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
+
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -77,6 +88,7 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+
       - name: Deploy images on AWS EC2
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
