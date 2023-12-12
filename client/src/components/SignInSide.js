@@ -48,7 +48,7 @@ export default function SignInSide() {
     const [access, setAccess] = useState(null);
 
     const handleSubmit = async (event) => {   
-        console.log("unutra si, dal sam?") 
+        console.log("unutra si") 
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
