@@ -97,9 +97,9 @@ jobs:
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
               # docker-compose down --rmi all -v 
-              docker stop $(docker ps -a -q)
-              docker rm $(docker ps -a -q)
-              docker rmi $(docker images -a -q)
+              docker stop $(docker ps -a -q) > log.txt
+              docker rm $(docker ps -a -q) >> log.txt
+              docker rmi $(docker images -a -q) >> log.txt
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
