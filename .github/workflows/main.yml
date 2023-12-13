@@ -61,6 +61,8 @@ jobs:
           echo $a
           docker --version > ids
           echo $ids
+          ls > b
+          echo $b
   # 2) the checking-secrets job
   checking-secrets:
     name: Checking secrets
