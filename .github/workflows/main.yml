@@ -62,7 +62,7 @@ jobs:
           echo $a
 "
           # set them as GitHub ENV variables
-          "Tests=$(docker --version)">> $GITHUB_ENV
+          echo "Tests=$(docker --version)">> $GITHUB_ENV
             
           # retrieve these GitHub ENV variables
           echo "${{ env.Tests }} test failed on CI?"
