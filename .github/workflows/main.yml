@@ -64,7 +64,7 @@ jobs:
           # echo "Tests=$(docker --version)">> $GITHUB_ENV
           echo "Tests=$(ls)">> $GITHUB_ENV
           # retrieve these GitHub ENV variables
-          echo "${{ env.Tests }} test failed on CI?"
+          echo $Tests
   # 2) the checking-secrets job
   checking-secrets:
     name: Checking secrets
