@@ -4,7 +4,7 @@ import SignUp from './components/SignUp';
 import SignInSide from './components/SignInSide';
 
 function App() {
-  console.log("Ilija care mogu da ti popuse kareric..") 
+  console.log("Ilija care mogu da ti popuse kuricinu..") 
   return (
       <SignInSide />
     );
