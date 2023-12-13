@@ -48,7 +48,7 @@ export default function SignInSide() {
     const [access, setAccess] = useState(null);
 
     const handleSubmit = async (event) => {   
-        console.log("Slusa moj kurac...") 
+        
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
