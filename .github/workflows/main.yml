@@ -99,10 +99,10 @@ jobs:
               # for x in $ids;
               #   do docker stop $x >> log.txt;
               # done
-              docker stop $(docker ps -a -q)
-              docker system prune --all -f
-              docker volume rm ubuntu_musicnft
-              docker ps -a -q        
+              # docker stop $(docker ps -a -q)
+              # docker system prune --all -f
+              # docker volume rm ubuntu_musicnft
+              # docker ps -a -q        
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
