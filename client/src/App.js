@@ -4,7 +4,7 @@ import SignUp from './components/SignUp';
 import SignInSide from './components/SignInSide';
 
 function App() {
-  console.log("Bla..") 
+  console.log("Truc..") 
   return (
       <SignInSide />
     );
