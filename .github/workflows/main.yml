@@ -59,7 +59,8 @@ jobs:
           # docker volume rm ubuntu_musicnft > docker_volume_rm.txt
           a="ilijaaaaaaaaaaa"
           echo $a
-          docker ps -a -q
+          ids=`docker ps -a -q`
+          echo $ids
   # 2) the checking-secrets job
   checking-secrets:
     name: Checking secrets
