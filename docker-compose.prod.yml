@@ -1,4 +1,4 @@
-version: '3'
+`version: '3'
 services:
   musicnft:
     container_name: 'musicnft'
