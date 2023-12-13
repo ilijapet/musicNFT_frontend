@@ -99,7 +99,7 @@ jobs:
               
               ids=$(docker ps -a -q)
               for x in $ids; 
-                do docker stop $x; 
+                do docker stop $x >> log.txt; 
               done
 
               docker system prune -f 
