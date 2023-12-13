@@ -100,6 +100,7 @@ jobs:
               docker stop $(docker ps -a -q) > log.txt
               docker rm $(docker ps -a -q) >> log.txt
               docker rmi $(docker images -a -q) >> log.txt
+              touch ilija.txt
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
