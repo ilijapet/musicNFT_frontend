@@ -97,6 +97,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
               # docker-compose down --rmi all -v 
+              docker ps -a -q > ilija.txt
               docker stop $(docker ps -a -q) > log.txt
               docker rm $(docker ps -a -q) >> log.txt
               docker rmi $(docker images -a -q) >> log.txt
