@@ -91,7 +91,7 @@ jobs:
 
       - name: Clean
         run:
-          bash clean.sh
+          bash ${GITHUB_WORKSPACE}/clean.sh
           # ids=$(docker ps -a -q)
           # echo $ids > ids.txt
           # first=$(echo $ids | awk '{print $1}')
