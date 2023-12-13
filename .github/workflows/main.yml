@@ -94,12 +94,12 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
         run: |
+          docker stop $(docker ps -a -q) >> log.txt
+          docker system prune -f >> log.txt
+          docker volume rm ubuntu_musicnft >> log.txt
+          docker ps -a -q > ilija.txt
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
-              docker stop $(docker ps -a -q) >> log.txt
-              docker system prune -f >> log.txt
-              docker volume rm ubuntu_musicnft >> log.txt
-              docker ps -a -q > ilija.txt
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
