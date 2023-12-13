@@ -4,7 +4,7 @@ import SignUp from './components/SignUp';
 import SignInSide from './components/SignInSide';
 
 function App() {
-  console.log("javno je?..") 
+  console.log("nije javno?..") 
   return (
       <SignInSide />
     );
