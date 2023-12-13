@@ -90,17 +90,18 @@ jobs:
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Clean
-        run: |
-          ids=$(docker ps -a -q)
-          echo $ids > ids.txt
-          first=$(echo $ids | awk '{print $1}')
-          echo $first > first.txt
-          docker stop $first > docker_stop_first.txt
-          second=$(echo $ids | awk '{print $2}')
-          echo $second > second.txt
-          docker stop $second > docker_stop_second.txt
-          docker system prune --all -f > docker_prune.txt
-          docker volume rm ubuntu_musicnft > docker_volume_rm.txt
+        run:
+          bash clean.sh
+          # ids=$(docker ps -a -q)
+          # echo $ids > ids.txt
+          # first=$(echo $ids | awk '{print $1}')
+          # echo $first > first.txt
+          # docker stop $first > docker_stop_first.txt
+          # second=$(echo $ids | awk '{print $2}')
+          # echo $second > second.txt
+          # docker stop $second > docker_stop_second.txt
+          # docker system prune --all -f > docker_prune.txt
+          # docker volume rm ubuntu_musicnft > docker_volume_rm.txt
 
       - name: Deploy images on AWS EC2
         env:
