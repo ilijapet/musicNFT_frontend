@@ -95,14 +95,13 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF  
-              # ids=$(docker ps -a -q)
-              # for x in $ids;
-              #   do docker stop $x >> log.txt;
-              # done
-              # docker stop $(docker ps -a -q)
-              # docker system prune --all -f
-              # docker volume rm ubuntu_musicnft
-              # docker ps -a -q        
+              ids=$(docker ps -a -q)
+              first=$(echo $ids | awk '{print $1}')
+              docker stop $first
+              second=$(echo $ids | awk '{print $2}')
+              docker stop $second
+              docker system prune --all -f
+              docker volume rm ubuntu_musicnft
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
