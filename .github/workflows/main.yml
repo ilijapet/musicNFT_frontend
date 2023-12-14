@@ -137,7 +137,9 @@ jobs:
               # echo $TESTS
               # echo $TESTS_ONE
               # docker stop 075baad03195
-              docker ps -a -q
+              # echo "TESTS=$(docker ps -a -q |awk '{print $1}')">> $GITHUB_ENV
+              echo "$(docker ps -a -q |awk '{print $1}')"
+              # docker ps -a -q
               a=$(docker ps -a -q | awk '{print $1}')
               echo $a
               echo "ilijaaaaaa"
