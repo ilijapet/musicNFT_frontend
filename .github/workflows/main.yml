@@ -106,33 +106,25 @@ jobs:
           # echo "Tests=10">> $GITHUB_ENV
           # retrieve these GitHub ENV variables
           # echo "${{ env.Tests }}"
-          echo "TESTS=$(docker ps)">> "$GITHUB_OUTPUT"
-          echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
+          # echo "TESTS=$(docker ps)">> "$GITHUB_OUTPUT"
+          # echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
+          echo "ilija"
 
       - name: Create a env variable
-        # run: echo "IDS=$( docker ps -a -q )" >> $GITHUB_ENV
-        # run: $(docker ps -a -q |awk '{print $1}') >> $GITHUB_ENV
-        # run: |
-        #   # a=$(docker ps -a -q | awk '{print $1}')
-        #   a=$(docker --version | awk '{print $1}')
-        #   echo $a
-        #   echo "arsssssen"
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
+          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               result=\$(docker ps -a -q)
               echo \$result
               docker logout
           EOF
-      # - name: Print env variable
-      #   run: echo ${{ env.IDS }}
 
       - name: Deploy images on AWS EC2
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          TESTS: ${{ steps.proba.outputs.TESTS }}
-          TESTS_ONE: ${{ steps.proba.outputs.TESTS_ONE }}
-
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
