@@ -116,9 +116,7 @@ jobs:
           TESTS_ONE: ${{ steps.proba.outputs.TESTS_ONE }}
         run: echo "IDS=${docker ps -a -q}" >> $GITHUB_ENV
 
-        run: |
-          echo ${{ env.IDS }}
-          echo "Arseeeen"
+        run: echo ${{ env.IDS }}
 
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
