@@ -89,43 +89,42 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
+      - name: Clean
+        id: proba
+        run: |
+          # ids=$(docker ps -a -q)
+          # echo $ids > ids.txt
+          # first=$(echo $ids | awk '{print $1}')
+          # echo $first > first.txt
+          # docker stop $first > docker_stop_first.txt
+          # second=$(echo $ids | awk '{print $2}')
+          # echo $second > second.txt
+          # docker stop $second > docker_stop_second.txt
+          # docker system prune --all -f > docker_prune.txt
+          # docker volume rm ubuntu_musicnft > docker_volume_rm.txt
+          # set them as GitHub ENV variables
+          echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
+          echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
+          # echo "Tests=10">> $GITHUB_ENV
+          # retrieve these GitHub ENV variables
+          # echo "${{ env.Tests }}"
+
       - name: Deploy images on AWS EC2
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          TESTS: ${{ steps.proba.outputs.TESTS }}
+          TESTS_ONE: ${{ steps.proba.outputs.TESTS_ONE }}
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
-              echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
-              echo "${{steps.outputs.TESTS}}"
+              # echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
+              # echo "${{steps.outputs.TESTS}}"
               echo "ilijaaaaaa"
+              echo $TESTS
+              echo $TESTS_ONE
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
               docker-compose --env-file=.env -f docker-compose.prod.yml up -d
               docker logout
           EOF
-
-        #   - name: Clean
-        #   id: proba
-        #   run: |
-        #     # ids=$(docker ps -a -q)
-        #     # echo $ids > ids.txt
-        #     # first=$(echo $ids | awk '{print $1}')
-        #     # echo $first > first.txt
-        #     # docker stop $first > docker_stop_first.txt
-        #     # second=$(echo $ids | awk '{print $2}')
-        #     # echo $second > second.txt
-        #     # docker stop $second > docker_stop_second.txt
-        #     # docker system prune --all -f > docker_prune.txt
-        #     # docker volume rm ubuntu_musicnft > docker_volume_rm.txt
-        #     # set them as GitHub ENV variables
-        #     echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
-        #     # echo "Tests=10">> $GITHUB_ENV
-        #     # retrieve these GitHub ENV variables
-        #     # echo "${{ env.Tests }}"
-
-        # - name: Proba
-        #   env:
-        #     TESTS: ${{ steps.proba.outputs.TESTS }}
-        #     TESTS: ${{ steps.proba.outputs.TESTS }}
-        #   run: echo "$TESTS"
