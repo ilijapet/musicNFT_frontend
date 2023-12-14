@@ -97,6 +97,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               result=\$(docker ps -a -q)
+              echo \$result
               result_one=\$(echo $(docker ps -a -q) | awk '{print $1}')
               result_two=\$(echo $(docker ps -a -q) | awk '{print $2}')
               echo \$result_one
