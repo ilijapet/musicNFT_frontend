@@ -90,24 +90,29 @@ jobs:
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Clean
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         id: proba
         run: |
-          # ids=$(docker ps -a -q)
-          # echo $ids > ids.txt
-          # first=$(echo $ids | awk '{print $1}')
-          # echo $first > first.txt
-          # docker stop $first > docker_stop_first.txt
-          # second=$(echo $ids | awk '{print $2}')
-          # echo $second > second.txt
-          # docker stop $second > docker_stop_second.txt
-          # docker system prune --all -f > docker_prune.txt
-          # docker volume rm ubuntu_musicnft > docker_volume_rm.txt
-          # set them as GitHub ENV variables
-          # echo "Tests=10">> $GITHUB_ENV
-          # retrieve these GitHub ENV variables
-          # echo "${{ env.Tests }}"
-          echo "TESTS=$(docker ps)">> "$GITHUB_OUTPUT"
-          echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
+          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
+          ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF       
+            # ids=$(docker ps -a -q)
+            # echo $ids > ids.txt
+            # first=$(echo $ids | awk '{print $1}')
+            # echo $first > first.txt
+            # docker stop $first > docker_stop_first.txt
+            # second=$(echo $ids | awk '{print $2}')
+            # echo $second > second.txt
+            # docker stop $second > docker_stop_second.txt
+            # docker system prune --all -f > docker_prune.txt
+            # docker volume rm ubuntu_musicnft > docker_volume_rm.txt
+            # set them as GitHub ENV variables
+            # echo "Tests=10">> $GITHUB_ENV
+            # retrieve these GitHub ENV variables
+            # echo "${{ env.Tests }}"
+            echo "TESTS=$(docker ps)">> "$GITHUB_OUTPUT"
+            echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
+          EOF
 
       - name: Deploy images on AWS EC2
         env:
@@ -119,16 +124,25 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               # echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
-              # echo "${{steps.outputs.TESTS}}"
+              echo "${{steps.outputs.TESTS}}"
+              echo "${{steps.outputs.TESTS_ONE}}"
               echo "ilijaaaaaa"
               # echo $TESTS
               # echo $TESTS_ONE
               # docker stop 075baad03195
+
+              ###################################
               docker system prune --all -f
+              
+              
               a=$(docker ps -a)
               id_volume=$(echo $a | awk '{print $8}')
               docker stop $id_volume     
+              
               docker volume rm ubuntu_musicnft
+              ###################################
+              
+              
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
               docker-compose --env-file=.env -f docker-compose.prod.yml up -d
