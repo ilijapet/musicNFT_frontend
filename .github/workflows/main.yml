@@ -103,8 +103,8 @@ jobs:
               echo \$result_one
               echo \$result_two
               rezultat=(\$result)
-              echo ${rezultat[0]}
-              echo ${rezultat[1]}
+              echo \${rezultat[0]}
+              echo \${rezultat[1]}
               echo "ilijaaaaaa care mogu da ti puse kare"
               docker logout
           EOF
