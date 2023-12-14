@@ -137,7 +137,7 @@ jobs:
               # echo $TESTS
               # echo $TESTS_ONE
               # docker stop 075baad03195
-              # docker ps -a -q
+              docker ps -a -q
               a=$(docker ps -a -q | awk '{print $1}')
               echo $a
               echo "ilijaaaaaa"
