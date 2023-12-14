@@ -119,8 +119,6 @@ jobs:
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               result=\$(docker ps -a -q)
               echo \$result
-              # echo "$( echo $result | awk '{print $1'}"
-
               echo "ilijaaaaaa care mogu da ti puse kare"
               docker logout
           EOF
