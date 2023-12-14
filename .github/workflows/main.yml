@@ -108,13 +108,12 @@ jobs:
           # echo "${{ env.Tests }}"
           echo "TESTS=$(docker ps)">> "$GITHUB_OUTPUT"
           echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
-      
+
       - name: Create a env variable
-          run: echo "IDS=${docker ps -a -q}" >> $GITHUB_ENV
-                
-      -name: Print env variable
-          run: |
-              echo ${{ env.IDS }}
+        run: echo "IDS=${docker ps -a -q}" >> $GITHUB_ENV
+
+      - name: Print env variable
+        run: echo ${{ env.IDS }}
 
       - name: Deploy images on AWS EC2
         env:
