@@ -98,6 +98,7 @@ jobs:
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
               echo "${{steps.outputs.TESTS}}"
+              echo "ilijaaaaaa"
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
               docker-compose --env-file=.env -f docker-compose.prod.yml up -d
