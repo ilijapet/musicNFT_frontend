@@ -100,10 +100,11 @@ jobs:
               echo \$result
               result_one=\$(echo \$(docker ps -a -q) | awk '{print $1}')
               result_two=\$(echo \$(docker ps -a -q) | awk '{print $2}')
-              result_three=\$(echo \$result | awk '{print $1}')
               echo \$result_one
               echo \$result_two
-              echo \$result_three
+              rezultat=(\$result)
+              echo ${rezultat[0]}
+              echo ${rezultat[1]}
               echo "ilijaaaaaa care mogu da ti puse kare"
               docker logout
           EOF
