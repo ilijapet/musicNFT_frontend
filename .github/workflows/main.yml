@@ -97,15 +97,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
               result=\$(docker ps -a -q)
-              echo \$result
-              result_one=\$(echo \$(docker ps -a -q) | awk '{print $1}')
-              result_two=\$(echo \$(docker ps -a -q) | awk '{print $2}')
-              echo \$result_one
-              echo \$result_two
               rezultat=(\$result)
               echo \${rezultat[0]}
               echo \${rezultat[1]}
-              echo "ilijaaaaaa care mogu da ti puse kare"
               docker logout
           EOF
 
@@ -115,40 +109,16 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
-              docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
-              # echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
-              echo "${{steps.outputs.TESTS}}"
-              echo "${{steps.outputs.TESTS_ONE}}"
-              # echo $TESTS
-              # echo $TESTS_ONE
-              # docker stop 075baad03195
-              # echo "TESTS=$(docker ps -a -q |awk '{print $1}')">> $GITHUB_ENV
-              # echo "$(docker ps -a -q |awk '{print $1}')"
-              # echo "$(docker ps |awk '{print $1}')"
-              echo "$(docker ps -a -q)"
-              docker ps -a -q
-              a=$(docker ps -a -q | awk '{print $1}')
-              echo $a
-              echo "ilijaaaaaa"
-              ###################################
-              # docker system prune --all -f
-              # docker ps -a -q
-              
-              # a=$(docker ps -a)
-              # id_volume=$(echo $a | awk '{print $8}')
-              # docker stop $id_volume     
-              
-              # docker volume rm ubuntu_musicnft
-              ###################################
-              
-              
+              result=\$(docker ps -a -q)
+              rezultat=(\$result)
+              echo \${rezultat[0]}
+              echo \${rezultat[1]}  
+              docker stop \${rezultat[0]}
+              docker stop \${rezultat[1]}
+              docker system prune --all -f              
+              docker volume rm ubuntu_musicnft
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
-              docker-compose --env-file=.env -f docker-compose.prod.yml up -d
-              # result=$(docker ps -a -q)
-              # result_one=$(docker --version)
-              # echo $result
-              # echo $result_one
-              echo "nevenaaaaaa"
+              docker-compose --env-file=.env -f docker-compose.prod.yml up -d            
               docker logout
           EOF
