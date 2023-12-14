@@ -18,6 +18,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Create a env variable
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
+          ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
+              docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
+              result=\$(docker ps -a -q)
+              echo \$result
+              echo "$( echo \$result | awk '{print $2}')"
+              echo "ilijaaaaaa care mogu da ti puse kare"
+              docker logout
+          EOF
+
       - name: checkout main
         uses: actions/checkout@v3
 
@@ -110,19 +124,19 @@ jobs:
           # echo "TESTS_ONE=$(docker --version)">> "$GITHUB_OUTPUT"
           echo "ilija"
 
-      - name: Create a env variable
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
-          ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
-              docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
-              result=\$(docker ps -a -q)
-              echo \$result
-              echo "$( echo \$result | awk '{print $2}')"
-              echo "ilijaaaaaa care mogu da ti puse kare"
-              docker logout
-          EOF
+      # - name: Create a env variable
+      #   env:
+      #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      #   run: |
+      #     scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
+      #     ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
+      #         docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
+      #         result=\$(docker ps -a -q)
+      #         echo \$result
+      #         echo "$( echo \$result | awk '{print $2}')"
+      #         echo "ilijaaaaaa care mogu da ti puse kare"
+      #         docker logout
+      #     EOF
 
       - name: Deploy images on AWS EC2
         env:
