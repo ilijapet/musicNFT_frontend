@@ -115,6 +115,12 @@ jobs:
           TESTS: ${{ steps.proba.outputs.TESTS }}
           TESTS_ONE: ${{ steps.proba.outputs.TESTS_ONE }}
         run: |
+          echo "IDS=${docker ps -a -q}" >> $GITHUB_ENV
+
+        - run: |
+          echo ${{ env.IDS }}
+          echo "Arseeeen"
+        run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
               docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
