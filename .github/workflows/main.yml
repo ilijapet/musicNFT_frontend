@@ -118,12 +118,12 @@ jobs:
         #   echo $a
         #   echo "arsssssen"
         run: |
-        ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
-            docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
-            result=\$(docker ps -a -q)
-            echo \$result
-            docker logout
-        EOF
+          ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
+              docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
+              result=\$(docker ps -a -q)
+              echo \$result
+              docker logout
+          EOF
       # - name: Print env variable
       #   run: echo ${{ env.IDS }}
 
