@@ -111,10 +111,14 @@ jobs:
 
       - name: Create a env variable
         # run: echo "IDS=$( docker ps -a -q )" >> $GITHUB_ENV
-        run: echo "IDS=$( ls )" >> $GITHUB_ENV
-
-      - name: Print env variable
-        run: echo ${{ env.IDS }}
+        # run: $(docker ps -a -q |awk '{print $1}') >> $GITHUB_ENV
+          run: |
+          a=$(docker ps -a -q | awk '{print $1}')
+          echo $a
+          echo "arsssssen"
+          
+      # - name: Print env variable
+      #   run: echo ${{ env.IDS }}
 
       - name: Deploy images on AWS EC2
         env:
