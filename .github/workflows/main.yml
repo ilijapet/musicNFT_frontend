@@ -114,12 +114,12 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           TESTS: ${{ steps.proba.outputs.TESTS }}
           TESTS_ONE: ${{ steps.proba.outputs.TESTS_ONE }}
-        run: |
-          echo "IDS=${docker ps -a -q}" >> $GITHUB_ENV
+        run: echo "IDS=${docker ps -a -q}" >> $GITHUB_ENV
 
-        - run: |
+        run: |
           echo ${{ env.IDS }}
           echo "Arseeeen"
+
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
