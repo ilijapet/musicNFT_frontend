@@ -121,15 +121,19 @@ jobs:
               # echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
               # echo "${{steps.outputs.TESTS}}"
               echo "ilijaaaaaa"
-              echo $TESTS
-              echo $TESTS_ONE
+              # echo $TESTS
+              # echo $TESTS_ONE
+              docker stop 075baad03195
+              docker stop 76620bcce253
+              docker system prune --all -f
+              docker volume rm ubuntu_musicnft
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
               docker-compose --env-file=.env -f docker-compose.prod.yml up -d
-              result=$(docker ps -a -q)
-              result_one=$(docker --version)
-              echo $result
-              echo $result_one
+              # result=$(docker ps -a -q)
+              # result_one=$(docker --version)
+              # echo $result
+              # echo $result_one
               echo "nevenaaaaaa"
               docker logout
           EOF
