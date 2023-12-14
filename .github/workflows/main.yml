@@ -121,20 +121,20 @@ jobs:
               # echo "TESTS=$(docker ps -a -q)">> "$GITHUB_OUTPUT"
               echo "${{steps.outputs.TESTS}}"
               echo "${{steps.outputs.TESTS_ONE}}"
-              echo "ilijaaaaaa"
               # echo $TESTS
               # echo $TESTS_ONE
               # docker stop 075baad03195
-
+              docker ps -a -q
+              echo "ilijaaaaaa"
               ###################################
-              docker system prune --all -f
+              # docker system prune --all -f
+              # docker ps -a -q
               
+              # a=$(docker ps -a)
+              # id_volume=$(echo $a | awk '{print $8}')
+              # docker stop $id_volume     
               
-              a=$(docker ps -a)
-              id_volume=$(echo $a | awk '{print $8}')
-              docker stop $id_volume     
-              
-              docker volume rm ubuntu_musicnft
+              # docker volume rm ubuntu_musicnft
               ###################################
               
               
