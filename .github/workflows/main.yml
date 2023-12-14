@@ -112,12 +112,18 @@ jobs:
       - name: Create a env variable
         # run: echo "IDS=$( docker ps -a -q )" >> $GITHUB_ENV
         # run: $(docker ps -a -q |awk '{print $1}') >> $GITHUB_ENV
+        # run: |
+        #   # a=$(docker ps -a -q | awk '{print $1}')
+        #   a=$(docker --version | awk '{print $1}')
+        #   echo $a
+        #   echo "arsssssen"
         run: |
-          # a=$(docker ps -a -q | awk '{print $1}')
-          a=$(docker --version | awk '{print $1}')
-          echo $a
-          echo "arsssssen"
-
+        ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
+            docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
+            result=\$(docker ps -a -q)
+            echo \$result
+            docker logout
+        EOF
       # - name: Print env variable
       #   run: echo ${{ env.IDS }}
 
@@ -139,6 +145,7 @@ jobs:
               # docker stop 075baad03195
               # echo "TESTS=$(docker ps -a -q |awk '{print $1}')">> $GITHUB_ENV
               # echo "$(docker ps -a -q |awk '{print $1}')"
+              # echo "$(docker ps |awk '{print $1}')"
               echo "$(docker ps -a -q)"
               docker ps -a -q
               a=$(docker ps -a -q | awk '{print $1}')
