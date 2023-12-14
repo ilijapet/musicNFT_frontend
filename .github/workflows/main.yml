@@ -113,10 +113,10 @@ jobs:
         # run: echo "IDS=$( docker ps -a -q )" >> $GITHUB_ENV
         # run: $(docker ps -a -q |awk '{print $1}') >> $GITHUB_ENV
           run: |
-          a=$(docker ps -a -q | awk '{print $1}')
-          echo $a
-          echo "arsssssen"
-          
+            a=$(docker ps -a -q | awk '{print $1}')
+            echo $a
+            echo "arsssssen"
+
       # - name: Print env variable
       #   run: echo ${{ env.IDS }}
 
