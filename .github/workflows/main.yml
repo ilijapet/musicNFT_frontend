@@ -113,7 +113,8 @@ jobs:
         # run: echo "IDS=$( docker ps -a -q )" >> $GITHUB_ENV
         # run: $(docker ps -a -q |awk '{print $1}') >> $GITHUB_ENV
         run: |
-          a=$(docker ps -a -q | awk '{print $1}')
+          # a=$(docker ps -a -q | awk '{print $1}')
+          a=$(docker --version | awk '{print $1}')
           echo $a
           echo "arsssssen"
 
