@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: checkout main
+        uses: actions/checkout@v3
+
       - name: Create a env variable
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -30,9 +33,6 @@ jobs:
               echo "ilijaaaaaa care mogu da ti puse kare"
               docker logout
           EOF
-
-      - name: checkout main
-        uses: actions/checkout@v3
 
       - name: Set environment variables to .env
         run: |
