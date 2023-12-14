@@ -123,9 +123,11 @@ jobs:
               echo "ilijaaaaaa"
               # echo $TESTS
               # echo $TESTS_ONE
-              docker stop 075baad03195
-              docker stop 76620bcce253
+              # docker stop 075baad03195
               docker system prune --all -f
+              a=$(docker ps -a)
+              id_volume=$(echo $a | awk '{print $8}')
+              docker stop $id_volume     
               docker volume rm ubuntu_musicnft
               docker pull $WEBSITE_IMAGE
               docker pull $NGINX_IMAGE 
