@@ -13,6 +13,13 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
+# newly added
+# Make the environment variable available at build time
+ARG REACT_APP_BACKEND_HOST
+
+# Create a .env file with the environment variable
+RUN echo REACT_APP_BACKEND_HOST=$REACT_APP_BACKEND_HOST >> .env
+
 # Build the React app
 RUN npm run build
 
