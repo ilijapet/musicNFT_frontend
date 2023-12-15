@@ -4,6 +4,9 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      # newly added
+      args:
+        - REACT_APP_BACKEND_HOST
       cache_from:
         - '${WEBSITE_IMAGE}'
     image: '${WEBSITE_IMAGE}'
