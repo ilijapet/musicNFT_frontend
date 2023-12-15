@@ -89,20 +89,6 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
-      - name: Clean up EC2 instance
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
-          ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
-              docker login ghcr.io -u ${{secrets.NAMESPACE}} -p ${{secrets.PERSONAL_ACCESS_TOKEN}}
-              result=\$(docker ps -a -q)
-              rezultat=(\$result)
-              echo \${rezultat[0]}
-              echo \${rezultat[1]}
-              docker logout
-          EOF
-
       - name: Deploy images on AWS EC2
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -111,8 +97,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF                
               result=\$(docker ps -a -q)
               rezultat=(\$result)
-              echo \${rezultat[0]}
-              echo \${rezultat[1]}  
               docker stop \${rezultat[0]}
               docker stop \${rezultat[1]}
               docker system prune --all -f              

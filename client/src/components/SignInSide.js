@@ -56,8 +56,10 @@ export default function SignInSide() {
             password: data.get('password'),
         });
 
+        console.log(process.env.REACT_APP_BACKEND_HOST)
+        console.log(`${process.env.REACT_APP_BACKEND_HOST}/api/token/`)
     
-        await fetch("http://nftsmusic.net/api/token/", {
+        await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/token/`, {
             method: "POST",
             // Adding body or contents to send
             body: JSON.stringify({
