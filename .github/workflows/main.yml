@@ -79,13 +79,12 @@ jobs:
           echo NGINX_IMAGE=${{ env.NGINX_IMAGE }} >> .env
           echo NAMESPACE=${{ secrets.NAMESPACE }} >> .env
           echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
-          echo REACT_APP_BACKEND_HOST=${{ secrets.REACT_APP_BACKEND_HOST }} >> .env
-
-      - name: Add the private SSH key to the ssh-agent
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          
+          - name: Add the private SSH key to the ssh-agent
+          env:
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          mkdir -p ~/.ssh
+        mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
@@ -95,15 +94,16 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           scp -o StrictHostKeyChecking=no -r ./.env ./docker-compose.prod.yml ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }}:
-            ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF            
-              result=\$(docker ps -a -q)
-              rezultat=(\$result)
-              docker stop \${rezultat[0]}
-              docker stop \${rezultat[1]}
-              docker system prune --all -f              
-              docker volume rm ubuntu_musicnft
-              docker pull $WEBSITE_IMAGE
-              docker pull $NGINX_IMAGE 
-              docker-compose --env-file=.env -f docker-compose.prod.yml up -d            
-              docker logout
+          ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF            
+            echo REACT_APP_BACKEND_HOST=${{ secrets.REACT_APP_BACKEND_HOST }} >> .env
+            result=\$(docker ps -a -q)
+            rezultat=(\$result)
+            docker stop \${rezultat[0]}
+            docker stop \${rezultat[1]}
+            docker system prune --all -f              
+            docker volume rm ubuntu_musicnft
+            docker pull $WEBSITE_IMAGE
+            docker pull $NGINX_IMAGE 
+            docker-compose --env-file=.env -f docker-compose.prod.yml up -d            
+            docker logout
           EOF
