@@ -1,5 +1,5 @@
 // import * as React from 'react';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +14,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+// Here we should improt post component and PostLoading component
+
 import { green } from '@mui/material/colors';
+
+import axiosInstance from '../axios';
 
 function Copyright(props) {
     return (
@@ -56,29 +60,23 @@ export default function SignInSide() {
             password: data.get('password'),
         });
 
-        console.log(process.env.REACT_APP_BACKEND_HOST)
-        console.log(`${process.env.REACT_APP_BACKEND_HOST}/api/token/`)
-    
-        await fetch(`${process.env.REACT_APP_BACKEND_HOST}/api/token/`, {
-            method: "POST",
-            // Adding body or contents to send
-            body: JSON.stringify({
+        try {
+            const response = await axiosInstance.post('token/', {
                 email: data.get('email'),
-                password: data.get('password')
-            }),            
-            // Adding headers to the request
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            setAccess(data["access"]);
-            setRefresh(data["refresh"]);
-            console.log(data["refresh"], data["access"]);
-        })
-        .catch((error) => console.log(error));   
-};
+                password: data.get('password'),
+            });
+    
+            // response.data will contain the response from the server
+            console.log(response.data);    
+            // If the server sends back access and refresh tokens, you can save them like this:
+            setAccess(response.data["access"]);
+            setRefresh(response.data["refresh"]);
+        } catch (error) {
+            // If the request fails, the error object will contain information about what went wrong
+            console.log(error);
+        }
+        };
+
 
 return (
     <ThemeProvider theme={defaultTheme}>
@@ -154,7 +152,7 @@ return (
                 </Link>
                 </Grid>
                 <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                 </Link>
                 </Grid>

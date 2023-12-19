@@ -16,7 +16,7 @@ jobs:
   build:
     name: Build the Docker Image
     runs-on: ubuntu-latest
-    # newly added
+    # newly=/
     env:
       REACT_APP_BACKEND_HOST: ${{ secrets.REACT_APP_BACKEND_HOST }}
 

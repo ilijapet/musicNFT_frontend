@@ -1,12 +1,23 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
-import SignUp from './components/SignUp';
-import SignInSide from './components/SignInSide';
+import SignInSide from './components/signInSide';
+import SignUp from './components/signUp';
+
+
+
 
 function App() {
-  console.log(process.env.REACT_APP_BACKEND_HOST)
   return (
-      <SignInSide />
+    <Router>
+        <React.StrictMode>
+          <Switch>
+            <Route exact path="/" component={SignInSide}/>
+            <Route exact path="/signup" component={SignUp}/>
+            TODO: add password restart path
+          </Switch>
+        </React.StrictMode>
+      </Router>
     );
 }
 

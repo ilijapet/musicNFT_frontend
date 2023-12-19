@@ -1,7 +1,6 @@
 import React from 'react';
 import * as serviceWorker from './serviceWorker';
 import './index.css';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createRoot } from 'react-dom/client';
@@ -11,17 +10,8 @@ import { createRoot } from 'react-dom/client';
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 
-const routing = (
-  <Router>
-		<React.StrictMode>
-			<Switch>
-				<Route exact path="/" component={App} />
-			</Switch>
-		</React.StrictMode>
-	</Router>
-);
 
-root.render(routing);
+root.render(<App />);
 
 // ReactDOM.render(routing, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
