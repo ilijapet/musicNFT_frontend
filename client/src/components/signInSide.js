@@ -1,9 +1,10 @@
-// import * as React from 'react';
 import React, { useState, useEffect } from "react";
+
+// Material UI imports
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
+import {TextField, Stack } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
@@ -13,11 +14,19 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-// Here we should improt post component and PostLoading component
-
 import { green } from '@mui/material/colors';
 
+// React router dom for routing
+import { useHistory } from 'react-router-dom';
+
+// React hook form for input validation
+import { useForm } from "react-hook-form";
+
+// React hook form dev tools for debugging
+import { DevTool } from "@hookform/devtools";
+
+
+// Axios for API calls
 import axiosInstance from '../axios';
 
 function Copyright(props) {
@@ -48,120 +57,141 @@ const defaultTheme = createTheme(
 );
 
 export default function SignInSide() {
+
+    
+    const form = useForm({
+        defualtValues: {
+        email: '',
+        password: '',
+    }
+    });
+
     const [refresh, setRefresh] = useState(null);
     const [access, setAccess] = useState(null);
+    const {register, handleSubmit, formState, control } = form;
+    const {errors} = formState;
 
-    const handleSubmit = async (event) => {   
-        
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-
-        try {
-            const response = await axiosInstance.post('token/', {
-                email: data.get('email'),
-                password: data.get('password'),
-            });
     
-            // response.data will contain the response from the server
-            console.log(response.data);    
-            // If the server sends back access and refresh tokens, you can save them like this:
-            setAccess(response.data["access"]);
-            setRefresh(response.data["refresh"]);
-        } catch (error) {
-            // If the request fails, the error object will contain information about what went wrong
-            console.log(error);
-        }
-        };
+  const history = useHistory();
 
+    const handler = async (event) => {           
+        // event.preventDefault();
+        // const data = new FormData(event.currentTarget);
+  
+    
+            await axiosInstance.post('token/', {
+                email: event['email'],
+                password: event['password'],
+            }).then((res) => {
+                // If the server sends back access and refresh tokens, you can save them like this:
+                setAccess(res.data["access"]);
+                setRefresh(res.data["refresh"]);
+                history.push('signup/'); // change this to user if profile crypto
+                console.log(res);
+                console.log(res.data);
+                }).catch((error) => {
+                console.error('There was an error!', error.res.data);
+                alert('There was an error!');
+                });
+            };
+    
+            
+            
+            return (
+                <ThemeProvider theme={defaultTheme}>
+                <Grid container component="main" sx={{ height: '100vh' }}>
+                    <CssBaseline />
+                    <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={7}
+                    sx={{
+                        backgroundImage: 'url(https://source.unsplash.com/large-floating-skull-oni-demon-japanese-folklore-pink-blue-shuten-doji-3d-illustration-render-51pGGOkw3wg)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                    }}
+                    />
+                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Box
+                        sx={{
+                            my: 8,
+                            mx: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                        >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                        Sign in
+                        </Typography>
 
-return (
-    <ThemeProvider theme={defaultTheme}>
-    <Grid container component="main" sx={{ height: '100vh' }}>
-        <CssBaseline />
-        <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-            backgroundImage: 'url(https://source.unsplash.com/large-floating-skull-oni-demon-japanese-folklore-pink-blue-shuten-doji-3d-illustration-render-51pGGOkw3wg)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-        }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Box
-            sx={{
-            my: 8,
-            mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            }}
-        >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-            Sign in
-            </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-            />
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-            />
-            <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-            />
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-            >
-                Sign In
-            </Button>
-            <Grid container>
-            <Grid item xs>
-                <Link href="#" variant="body2">
-                    Forgot password?
-                </Link>
+                        <Stack>
+                        <form onSubmit={handleSubmit(handler)} noValidate> 
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            {...register("email", {required:"Email is required"})}
+                            error={!!errors.email}
+                            helperText={errors.email?.message}
+                            />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            {...register("password", {required:"Password is required"})}
+                            error={!!errors.password}
+                            helperText={errors.password?.message}
+                            />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                            />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                        </form>
+                        </Stack>
+
+                        <Grid container>
+                        <Grid item xs>
+                            <Link href="#" variant="body2">
+                                Forgot password?
+                            </Link>
+                            </Grid>
+                            <Grid item>
+                            <Link href="/signup" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                            </Grid>
+                        </Grid>
+                        <Copyright sx={{ mt: 5 }} />
+                        </Box>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                </Link>
-                </Grid>
-            </Grid>
-            <Copyright sx={{ mt: 5 }} />
-            </Box>
-        </Box>
-        </Grid>
-    </Grid>
-    </ThemeProvider>
-);
-}
+                <DevTool control={control}/>
+                </ThemeProvider>
+            );
+};

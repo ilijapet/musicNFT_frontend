@@ -33,8 +33,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme(
   {
       palette: {
@@ -66,12 +64,13 @@ export default function SignUp() {
 
   const history = useHistory();
 
-  const handler = (event) => {
+  const handler = async (event) => {
     // event.preventDefault();
-    console.log(event["firstName"]);
+    // console.log(event["firstName"]);
     // const data = new FormData(event.currentTarget);
     // console.log(data.get('email'));
-    axiosInstance.post('user/register/', {
+    
+    await axiosInstance.post('user/register/', {
       email: event['email'],
       password: event['password'],
       user_name: event['username'],
