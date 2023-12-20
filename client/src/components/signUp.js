@@ -3,9 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import {TextField, Stack} from '@mui/material';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,7 +11,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 import { green } from '@mui/material/colors';
 
 
@@ -51,16 +50,31 @@ const defaultTheme = createTheme(
 
 
 export default function SignUp() {
+
+  const form = useForm({
+    defualtValues: {
+      email: '',
+      password: '',
+      username: '',
+    }
+  });
+
+  const {register, handleSubmit, formState, control } = form;
+  const {errors} = formState;
   
+
+
   const history = useHistory();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handler = (event) => {
+    // event.preventDefault();
+    console.log(event["firstName"]);
+    // const data = new FormData(event.currentTarget);
+    // console.log(data.get('email'));
     axiosInstance.post('user/register/', {
-      email: data.get('email'),
-      password: data.get('password'),
-      user_name: data.get('firstName'),
+      email: event['email'],
+      password: event['password'],
+      user_name: event['username'],
     }).then((res) => {
       history.push('/');
       console.log(res);
@@ -90,7 +104,8 @@ export default function SignUp() {
             Sign up
           </Typography>
           
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Stack>
+            <form onSubmit={handleSubmit(handler)} noValidate> 
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <TextField
@@ -101,7 +116,10 @@ export default function SignUp() {
                   id="firstName"
                   label="Username"
                   autoFocus
-                />
+                  {...register("username", {required:"Username is required"})}
+                  error={!!errors.username}
+                  helperText={errors.username?.message}
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -111,7 +129,10 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                />
+                  {...register("email", {required:"Email is required"})}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -122,7 +143,10 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
+                  {...register("password", {required:"Password is required"})}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  />
               </Grid>
           
             </Grid>
@@ -131,9 +155,11 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-            >
+              >
               Sign Up
             </Button>
+            </form>
+            </Stack>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/" variant="body2">
@@ -142,9 +168,9 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      <DevTool control={control}/>
     </ThemeProvider>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as serviceWorker from './serviceWorker';
-import './index.css';
+// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createRoot } from 'react-dom/client';
