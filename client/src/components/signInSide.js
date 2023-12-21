@@ -66,8 +66,6 @@ export default function SignInSide() {
     }
     });
 
-    const [refresh, setRefresh] = useState(null);
-    const [access, setAccess] = useState(null);
     const {register, handleSubmit, formState, control } = form;
     const {errors} = formState;
 
@@ -75,18 +73,16 @@ export default function SignInSide() {
   const history = useHistory();
 
     const handler = async (event) => {           
-        // event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-  
     
             await axiosInstance.post('token/', {
                 email: event['email'],
                 password: event['password'],
             }).then((res) => {
-                // If the server sends back access and refresh tokens, you can save them like this:
-                setAccess(res.data["access"]);
-                setRefresh(res.data["refresh"]);
-                history.push('signup/'); // change this to user if profile crypto
+                localStorage.setItem("access_token", res.data["access"]);
+                localStorage.setItem("refresh_token", res.data["refresh"]);
+                axiosInstance.defaults.headers['Authorization'] =
+					'JWT ' + localStorage.getItem('access_token');                
+                history.push('profile/'); // change this to user if profile crypto
                 console.log(res);
                 console.log(res.data);
                 }).catch((error) => {
