@@ -70,7 +70,7 @@ export default function SignInSide() {
     const {errors} = formState;
 
     
-  const history = useHistory();
+    const history = useHistory();
 
     const handler = async (event) => {           
     
@@ -82,11 +82,11 @@ export default function SignInSide() {
                 localStorage.setItem("refresh_token", res.data["refresh"]);
                 axiosInstance.defaults.headers['Authorization'] =
 					'JWT ' + localStorage.getItem('access_token');                
-                history.push('profile/'); // change this to user if profile crypto
+                history.push('profile/'); 
                 console.log(res);
                 console.log(res.data);
                 }).catch((error) => {
-                console.error('There was an error!', error.res.data);
+                console.error('There was an error!', error);
                 alert('There was an error!');
                 });
             };

@@ -6,10 +6,31 @@ import SignUp from './components/signUp';
 import Logout from './components/logout';
 import UserProfile from './components/userProfile';
 
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
+import { WagmiConfig } from 'wagmi'
+import { arbitrum, mainnet } from 'viem/chains'
+
+// import this from .env file
+const projectId = 'ebfc3e14a901b328f14cc33d9706cd48'
+
+// 2. Create wagmiConfig
+const metadata = {
+  name: 'MusicalNFT',
+  description: 'Musical NFT Dapp',
+  url: 'https://nftsmusic.net/',
+  icons: ['https://avatars.githubusercontent.com/u/37784886']
+}
+
+const chains = [mainnet, arbitrum]
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
+
+// 3. Create modal
+createWeb3Modal({ wagmiConfig, projectId, chains })
 
 
 function App() {
   return (
+    <WagmiConfig config={wagmiConfig}>
     <Router>
         <React.StrictMode>
           <Switch>
@@ -21,6 +42,7 @@ function App() {
           </Switch>
         </React.StrictMode>
       </Router>
+      </WagmiConfig>
     );
 }
 

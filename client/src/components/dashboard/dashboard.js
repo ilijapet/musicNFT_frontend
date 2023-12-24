@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { NavLink } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,6 +16,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import { green } from '@mui/material/colors';
+import Button from '@mui/material/Button';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -23,31 +25,42 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './chart';
 import Deposits from './deposits';
 import Orders from './orders';
+// import Logoout component
+
+
+
+// import { useHistory } from 'react-router-dom';
+
+// Axios for API calls
+import axiosInstance from '../../axios';
+
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://nftsmusic.net/">  
+      nftsmusic.net
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
-    </Typography>
+      </Typography>
   );
 }
+
 
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
+})(({ theme, openOne }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  ...(open && {
+  ...(openOne && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -58,7 +71,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
+  ({ theme, openOne }) => ({
     '& .MuiDrawer-paper': {
       position: 'relative',
       whiteSpace: 'nowrap',
@@ -68,7 +81,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         duration: theme.transitions.duration.enteringScreen,
       }),
       boxSizing: 'border-box',
-      ...(!open && {
+      ...(!openOne && {
         overflowX: 'hidden',
         transition: theme.transitions.create('width', {
           easing: theme.transitions.easing.sharp,
@@ -97,17 +110,20 @@ const defaultTheme = createTheme(
 );
 
 
-export default function Dashboard() {
-  const [open, setOpen] = React.useState(true);
+export default function Dashboard({ paymentType }) {
+  const [openOne, setOpen] = React.useState(true);
   const toggleDrawer = () => {
-    setOpen(!open);
+    setOpen(!openOne);
   };
+  const { open } = useWeb3Modal()
+
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={openOne}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -120,7 +136,7 @@ export default function Dashboard() {
               onClick={toggleDrawer}
               sx={{
                 marginRight: '36px',
-                ...(open && { display: 'none' }),
+                ...(openOne && { display: 'none' }),
               }}
             >
               <MenuIcon />
@@ -134,14 +150,12 @@ export default function Dashboard() {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {/* Add here Wallet connect button conditional  */}
+            {paymentType === "crypto" && <Button color="inherit" onClick={ () => open() }>Connect wallet </Button>}
+            <Button color="inherit" component={NavLink} to="/logout">Logout</Button>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={openOne}>
           <Toolbar
             sx={{
               display: 'flex',

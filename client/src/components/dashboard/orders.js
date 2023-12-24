@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Title from './title';
 
 // Generate Order Data
+// Read from OrderHistory database
 function createData(id, date, name, shipTo, paymentMethod, amount) {
   return { id, date, name, shipTo, paymentMethod, amount };
 }
@@ -60,8 +61,8 @@ export default function Orders() {
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
+            <TableCell>NFT Name</TableCell>
+            <TableCell>Owner</TableCell>
             <TableCell>Payment Method</TableCell>
             <TableCell align="right">Sale Amount</TableCell>
           </TableRow>

@@ -5,49 +5,30 @@ import Dashboard from "./dashboard/dashboard";
 
 import axiosInstance from "../axios";
 
-// JWT token
-import { jwtDecode } from "jwt-decode";
-
 
 function UserProfile() {
-    const [userStatus, setStatus] = useState(null);
-    const token =  localStorage.getItem('access_token')
-    const decoded = jwtDecode(token);
+    
+    const [paymentType, setPaymentType] = useState(null);
 
-    // Read from database status of login user
     const getUserStatus = async () => {
         try {
-            const res = await axiosInstance.post('userStatus/', {
-                user_id: decoded["user_id"],
-            });
+            const res = await axiosInstance.get('user/userStatus/');
             console.log(res);
-            setStatus(res.data["user_id"]); // Set the state here
+            setPaymentType(res.data["payment_type"]); // Set the state here
         } catch (error) {
-            console.error('There was an error!', error.res.data);
+            console.error('There was an error!', error);
             alert('There was an error!');
         }
     };
-
     
-    // Turn on later on
-    // useEffect(() => {
-    //         getUserStatus();
-    //     }, []); 
+    useEffect(() => {
+            getUserStatus();
+        }, []); 
 
 
-
-    if (true) {
         return (
-            // <CryptoUser />
-            <Dashboard />
+            <Dashboard  paymentType={paymentType} />
         )
-    } else {
-        return (
-            <CreditCardUser />
-        )
-    }
-    
-
 }
 
 
