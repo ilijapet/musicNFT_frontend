@@ -151,7 +151,7 @@ export default function Dashboard({ paymentType }) {
               Dashboard
             </Typography>
             {/* Add here Wallet connect button conditional  */}
-            {paymentType === "crypto" && <Button color="inherit" onClick={ () => open() }>Connect wallet </Button>}
+            {paymentType === "undefined" && <Button color="inherit" onClick={ () => open() }>Connect wallet </Button>}
             <Button color="inherit" component={NavLink} to="/logout">Logout</Button>
           </Toolbar>
         </AppBar>
