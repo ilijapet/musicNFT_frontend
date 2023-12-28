@@ -5,7 +5,8 @@ import SignInSide from './components/signInSide';
 import SignUp from './components/signUp';
 import Logout from './components/logout';
 import UserProfile from './components/userProfile';
-
+import ForgetPassword from './components/forgetPassword';
+import ResetConfirmation from './components/resetConfirmation';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet } from 'viem/chains'
@@ -38,6 +39,8 @@ function App() {
             <Route exact path="/signup" component={SignUp}/>
             <Route exact path="/logout" component={Logout}/>
             <Route exact path="/profile" component={UserProfile}/>
+            <Route exact path="/forgetpassword" component={ForgetPassword}/>
+            <Route exact path="/resetconfirmation" component={ResetConfirmation}/>
             TODO: add password restart path
           </Switch>
         </React.StrictMode>
