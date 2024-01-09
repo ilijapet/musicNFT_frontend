@@ -2,9 +2,8 @@ name: Continuous Integration and Delivery
 
 on:
   push:
-    # his solution is just -ec2
     branches: 
-      -ec2
+      - ec2
 
 # define the three jobs to run
 jobs:
@@ -37,3 +36,8 @@ jobs:
       - name: Run new container
         run: docker run -d  -p 3000:80 --name musicnft-frontend ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend
       
+        
+  
+
+
+
