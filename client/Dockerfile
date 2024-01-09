@@ -1,8 +1,12 @@
 # Use an official Node.js runtime as the base image
 
-FROM node:19.6.0-alpine
+
+# Step 1: build React App
+FROM node:19.6.0-alpine as build
+
+
 # Set the working directory within the container
-WORKDIR /client
+WORKDIR /app
 
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
@@ -23,5 +27,13 @@ RUN echo REACT_APP_BACKEND_HOST=$REACT_APP_BACKEND_HOST >> .env
 # Build the React app
 RUN npm run build
 
-# Build the React app
-EXPOSE 3000
+
+# Step 2: serve React App with nginx server
+FROM nginx:1.23-alpine
+# Default Ngnix directory
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+# Copy the build output from the build stage to the Nginx directory
+COPY --from=build /app/build .
+EXPOSE 80
+ENTRYPOINT [ "nginx", "-g", "deamon off;" ]
