@@ -63,11 +63,18 @@ export default function ForgetPassword () {
         try {
             const email = event["email"]
             console.log(email)
-            const response = await axiosInstance.post("user/resetpassword/", {
-                    email: JSON.stringify({ email })
-                });
-                // const data = await response.json();
-                // history.push('/resetconfirmation');
+            const response = await axiosInstance.post("user/resetpassword/", 
+                    JSON.stringify({ email })
+                );
+
+            console.log(response.data["absurl"])
+                
+            // Here Im going to redirect to the reset password confirmation page
+            history.push({
+                pathname: '/resetconfirmationmail',
+                state: { absurl: response.data["absurl"] }
+            });
+
             } catch (err) {
                 console.log(err);
         }

@@ -29,6 +29,7 @@ import { DevTool } from "@hookform/devtools";
 // Axios for API calls
 import axiosInstance from '../axios';
 
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -72,7 +73,7 @@ export default function SignInSide() {
     
     const history = useHistory();
 
-    const handler = async (event) => {           
+    const handler = async (event) => {        
     
             await axiosInstance.post('token/', {
                 email: event['email'],

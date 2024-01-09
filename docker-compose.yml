@@ -14,7 +14,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - '81:81'
+      - '80:80'
     volumes:
       - musicnft:/usr/share/nginx/html/musicnft # Copy React App's build files to the Nginx directory
 

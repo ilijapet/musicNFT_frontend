@@ -19,6 +19,7 @@ axiosInstance.interceptors.response.use(
 	(response) => {
 		return response;
 	},
+
 	async function (error) {
 		const originalRequest = error.config;
 

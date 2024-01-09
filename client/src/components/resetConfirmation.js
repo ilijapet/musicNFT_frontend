@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -51,6 +51,10 @@ export default function ResetConfirmation () {
 
     const history = useHistory();
 
+    let location = useLocation();
+    let absurl = location.state.absurl;
+    console.log(absurl);
+
 
 
     return (
@@ -69,11 +73,10 @@ export default function ResetConfirmation () {
             <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-            Check email for reset link
+            You sucessfully reset your password!
             </Typography>
             
             <Stack>
-            {/* <form onSubmit={(e) => { e.preventDefault(); history.push("/"); }} noValidate>  */}
             <form onClick={()=>history.push("/")} noValidate> 
             <Button
                 type="submit"

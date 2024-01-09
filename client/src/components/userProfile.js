@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from "react";
-import CryptoUser from "./cryptoUser";
-import CreditCardUser from "./creditCardUser";
 import Dashboard from "./dashboard/dashboard";
 
 import axiosInstance from "../axios";
