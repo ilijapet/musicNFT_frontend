@@ -100,12 +100,12 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF            
             # newly added
             echo REACT_APP_BACKEND_HOST=${{ secrets.REACT_APP_BACKEND_HOST }} >> .env
-            result=\$(docker ps -a -q)
-            rezultat=(\$result)
-            docker stop \${rezultat[0]}
-            docker stop \${rezultat[1]}
-            docker system prune --all -f              
-            docker volume rm ubuntu_musicnft
+            # result=\$(docker ps -a -q)
+            # rezultat=(\$result)
+            # docker stop \${rezultat[0]}
+            # docker stop \${rezultat[1]}
+            # docker system prune --all -f              
+            # docker volume rm ubuntu_musicnft
             docker pull $WEBSITE_IMAGE
             docker pull $NGINX_IMAGE 
             docker-compose --env-file=.env -f docker-compose.prod.yml up -d            
