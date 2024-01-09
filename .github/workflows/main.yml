@@ -15,26 +15,26 @@ jobs:
       REACT_APP_BACKEND_HOST: ${{ secrets.REACT_APP_BACKEND_HOST }}
 
     steps:
-      - name: checkout main
-        uses: actions/checkout@v3
-      - name: Login to Docker hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend .
-      - name: Publish image to Docker hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend:latest
+       - name: checkout main
+         uses: actions/checkout@v3
+       - name: Login to Docker hub
+         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+       - name: Build Docker image
+         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend .
+       - name: Publish image to Docker hub
+         run: docker push ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend:latest
 
   # 2) deploy to ec2
   deploy:
     needs: build
     runs-on: aws-ec2
     steps:
-      - name: Pull image from docker hub
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend:latest
-      -name: Delete old container
-        run: docker rm -f musicnft-frontend || true
-      - name: Run new container
-        run: docker run -d  -p 3000:80 --name musicnft-frontend ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend
+       - name: Pull image from docker hub
+         run: docker pull ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend:latest
+       -name: Delete old container
+         run: docker rm -f musicnft-frontend || true
+       - name: Run new container
+         run: docker run -d  -p 3000:80 --name musicnft-frontend ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend
       
         
   
