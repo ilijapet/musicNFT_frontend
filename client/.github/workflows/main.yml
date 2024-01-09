@@ -3,7 +3,8 @@ name: Continuous Integration and Delivery
 on:
   push:
     # his solution is just -ec2
-    branches: [ec2]
+    branches: 
+      -ec2
 
 # define the three jobs to run
 jobs:
