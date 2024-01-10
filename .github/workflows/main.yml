@@ -30,8 +30,8 @@ jobs:
     runs-on: aws-ec2
     steps:
       - name: Pull image from docker hub
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend:latest
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend:latest
       - name: Delete old container
-        run: docker rm -f musicnft-frontend || true
+        run: sudo docker rm -f musicnft-frontend || true
       - name: Run new container
-        run: docker run -d  -p 3000:80 --name musicnft-frontend ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend
+        run: sudo docker run -d  -p 3000:80 --name musicnft-frontend ${{ secrets.DOCKER_USERNAME }}/musicnft-frontend
