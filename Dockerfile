@@ -38,4 +38,4 @@ RUN rm -rf *
 # Copy the build output from the build stage to the Nginx directory
 COPY --from=build /app/build .
 EXPOSE 80
-ENTRYPOINT [ "nginx", "-g", "deamon off;" ]
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
