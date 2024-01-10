@@ -35,6 +35,9 @@ FROM nginx:1.23-alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf *
 
+# Copy a custom Nginx configuration file into the image
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the build output from the build stage to the Nginx directory
 COPY --from=build /app/build .
 EXPOSE 80
