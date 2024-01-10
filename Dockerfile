@@ -2,7 +2,7 @@
 
 
 # Step 1: build React App
-FROM node:alpine3.18` as build
+FROM node:alpine3.18 as build
 
 
 # Set the working directory within the container
