@@ -2,7 +2,7 @@
 
 
 # Step 1: build React App
-FROM node:19.6.0-alpine as build
+FROM node:alpine3.18` as build
 
 
 # Set the working directory within the container
@@ -30,9 +30,11 @@ RUN npm run build
 
 # Step 2: serve React App with nginx server
 FROM nginx:1.23-alpine
+
 # Default Ngnix directory
 WORKDIR /usr/share/nginx/html
 RUN rm -rf *
+
 # Copy the build output from the build stage to the Nginx directory
 COPY --from=build /app/build .
 EXPOSE 80
